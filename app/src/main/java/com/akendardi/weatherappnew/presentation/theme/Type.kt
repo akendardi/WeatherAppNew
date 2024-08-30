@@ -1,4 +1,4 @@
-package com.akendardi.weatherappnew.ui.theme
+package com.akendardi.weatherappnew.presentation.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle

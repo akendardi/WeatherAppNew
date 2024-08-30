@@ -1,6 +1,5 @@
-package com.akendardi.weatherappnew.ui.theme
+package com.akendardi.weatherappnew.presentation.theme
 
-import android.app.Activity
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
