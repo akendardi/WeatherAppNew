@@ -57,3 +57,4 @@ jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = 
 ksp = {id = "com.google.devtools.ksp", version.ref = "ksp"}
 parcelize = {id = "org.jetbrains.kotlin.plugin.parcelize", version.ref = "parcelize"}
 
+
