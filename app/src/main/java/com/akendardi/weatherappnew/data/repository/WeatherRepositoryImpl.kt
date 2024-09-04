@@ -1,5 +1,6 @@
 package com.akendardi.weatherappnew.data.repository
 
+import android.util.Log
 import com.akendardi.weatherappnew.data.mapper.toEntity
 import com.akendardi.weatherappnew.data.network.api.ApiService
 import com.akendardi.weatherappnew.domain.entity.Forecast

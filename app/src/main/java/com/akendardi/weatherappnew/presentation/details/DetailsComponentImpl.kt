@@ -6,16 +6,19 @@ import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.mvikotlin.core.instancekeeper.getStore
 import com.arkivanov.mvikotlin.extensions.coroutines.labels
 import com.arkivanov.mvikotlin.extensions.coroutines.stateFlow
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedFactory
+import dagger.assisted.AssistedInject
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
-class DetailsComponentImpl(
-    private val city: City,
+class DetailsComponentImpl @AssistedInject constructor(
     private val storeFactory: DetailsStoreFactory,
-    private val component: ComponentContext,
-    private val onBackClicked: () -> Unit
-) : DetailsComponent, ComponentContext by component{
+    @Assisted("city") private val city: City,
+    @Assisted("component") component: ComponentContext,
+    @Assisted("onBackClicked") private val onBackClicked: () -> Unit
+) : DetailsComponent, ComponentContext by component {
 
     private val scope = componentScope()
 
@@ -25,8 +28,8 @@ class DetailsComponentImpl(
 
     init {
         scope.launch {
-            store.labels.collect{
-                when(it){
+            store.labels.collect {
+                when (it) {
                     DetailsStore.Label.ClickBack -> {
                         onBackClicked()
                     }
@@ -44,5 +47,14 @@ class DetailsComponentImpl(
 
     override fun onClickBack() {
         store.accept(DetailsStore.Intent.ClickBack)
+    }
+
+    @AssistedFactory
+    interface Factory {
+        fun create(
+            @Assisted("city") city: City,
+            @Assisted("component") component: ComponentContext,
+            @Assisted("onBackClicked") onBackClicked: () -> Unit
+        ): DetailsComponentImpl
     }
 }

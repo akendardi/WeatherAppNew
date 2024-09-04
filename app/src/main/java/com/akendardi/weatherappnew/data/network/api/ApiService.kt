@@ -21,7 +21,7 @@ interface ApiService {
 
     @GET("search.json")
     suspend fun searchCity(
-        @Query("q") query: String,
+        @Query("q") query: String
     ): List<CityDto>
 }
 

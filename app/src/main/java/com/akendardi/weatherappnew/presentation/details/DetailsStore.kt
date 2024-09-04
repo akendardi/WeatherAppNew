@@ -1,5 +1,6 @@
 package com.akendardi.weatherappnew.presentation.details
 
+import android.util.Log
 import com.akendardi.weatherappnew.domain.entity.City
 import com.akendardi.weatherappnew.domain.entity.Forecast
 import com.akendardi.weatherappnew.domain.usecase.ChangeFavouriteStateUseCase
@@ -103,8 +104,10 @@ class DetailsStoreFactory @Inject constructor(
                 dispatch(Action.ForecastStartLoading)
                 try {
                     val forecast = getForecastUseCase(cityId = city.id)
+                    Log.d("ERROR_TEST", forecast.toString())
                     dispatch(Action.ForecastLoaded(forecast))
                 } catch (e: Exception) {
+                    Log.d("ERROR_TEST", e.message.toString())
                     dispatch(Action.ForecastLoadingError)
                 }
             }

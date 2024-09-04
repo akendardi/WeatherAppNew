@@ -6,17 +6,20 @@ import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.mvikotlin.core.instancekeeper.getStore
 import com.arkivanov.mvikotlin.extensions.coroutines.labels
 import com.arkivanov.mvikotlin.extensions.coroutines.stateFlow
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedFactory
+import dagger.assisted.AssistedInject
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class FavouriteComponentImpl @Inject constructor(
+class FavouriteComponentImpl @AssistedInject constructor(
     private val storeFactory: FavouriteStoreFactory,
-    private val component: ComponentContext,
-    private val onCityItemClick: (City) -> Unit,
-    private val onSearchClick: () -> Unit,
-    private val onAddFavouriteClick: () -> Unit
+    @Assisted("component") component: ComponentContext,
+    @Assisted("onCityItemClicked") private val onCityItemClicked: (City) -> Unit,
+    @Assisted("onSearchClick") private val onSearchClick: () -> Unit,
+    @Assisted("onAddFavouriteClick") private val onAddFavouriteClick: () -> Unit
 ) : FavouriteComponent, ComponentContext by component {
 
     private val scope = componentScope()
@@ -30,7 +33,7 @@ class FavouriteComponentImpl @Inject constructor(
             store.labels.collect {
                 when (it) {
                     is FavouriteStore.Label.CityItemClick -> {
-                        onCityItemClick(it.city)
+                        onCityItemClicked(it.city)
                     }
 
                     FavouriteStore.Label.ClickSearch -> {
@@ -59,5 +62,15 @@ class FavouriteComponentImpl @Inject constructor(
 
     override fun onCityItemClick(city: City) {
         store.accept(FavouriteStore.Intent.CityItemClick(city))
+    }
+
+    @AssistedFactory
+    interface Factory {
+        fun create(
+            @Assisted("component") component: ComponentContext,
+            @Assisted("onCityItemClicked") onCityItemClicked: (City) -> Unit,
+            @Assisted("onSearchClick") onSearchClick: () -> Unit,
+            @Assisted("onAddFavouriteClick") onAddFavouriteClick: () -> Unit
+        ): FavouriteComponentImpl
     }
 }
